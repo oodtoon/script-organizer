@@ -1,0 +1,60 @@
+.scene-container {
+  display: grid;
+  margin: auto;
+  border: solid 3px black;
+  justify-items: center;
+  border-radius: 4px;
+}
+
+/* Sketch Card - might not be necessary? */ 
+/*
+.sketch-container {
+  display: grid;
+  grid-template-rows: 3em auto;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "title completed" "sketch sketch";
+  margin: 2em auto;
+  border: solid 3px black;
+  box-shadow: 0 0 0.5em;
+  justify-items: start;
+  padding: 2em;
+  border-radius: 4px;
+}
+
+.sketch-title {
+  grid-area: title;
+}
+
+.completed {
+  grid-area: completed;
+  justify-self: end;
+}
+
+.sketch-body {
+  grid-area: sketch;
+}*/
+/* Sketch Form */ 
+
+.new-sketch-form {
+  display: grid;
+  margin: 2em auto;
+  border: solid 3px black;
+  justify-items: start;
+  padding: 2em;
+  border-radius: 4px;
+}
+
+.filter-container {
+  display: grid;
+  margin: 2em auto;
+  border: solid 3px black;
+  justify-items: center;
+  border-radius: 4px;
+  padding: 1em 2em 4em 2em;
+}
+
+/* SELECTOR */
+
+.selector {
+  margin: 1em;
+}
