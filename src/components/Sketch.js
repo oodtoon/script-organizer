@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { useState } from "react";
 import scriptService from "../services/scripts";
+import InLineEdit from "./InLineEdit";
 
 const Sketch = (props) => {
   const [status, setStatus] = useState(props.sketch.completed);
@@ -22,6 +23,8 @@ const Sketch = (props) => {
 
   const title = {
     gridArea: "title",
+    textDecoration: props.sketch.completed === true ? "line-through" : "none",
+    display: "grid"
   };
 
   const completed = {
@@ -31,6 +34,8 @@ const Sketch = (props) => {
 
   const sketchBody = {
     gridArea: "sketch",
+    textDecoration: props.sketch.completed === true ? "line-through" : "none",
+    display: "grid"
   };
 
   const drag = {
@@ -46,18 +51,18 @@ const Sketch = (props) => {
     );
   };
 
-
-  
   const handleCheck = (event) => {
     const checkedSketch = { ...props.sketch, completed: event.target.checked };
 
     const updatedObj = {
       ...props.script,
-      scenes: props.script.scenes.map((sketch) => sketch.id !== props.sketch.id ? sketch : checkedSketch)
-    }
-  
-    scriptService.update(props.script.id, updatedObj).then(response => {
-      props.setScript(response.data)
+      scenes: props.script.scenes.map((sketch) =>
+        sketch.id !== props.sketch.id ? sketch : checkedSketch
+      ),
+    };
+
+    scriptService.update(props.script.id, updatedObj).then((response) => {
+      props.setScript(response.data);
     });
 
     setStatus(event.target.checked);
@@ -69,13 +74,33 @@ const Sketch = (props) => {
         <div {...props.provided.dragHandleProps}>
           <DragHandle />
         </div>
-        <Box style={title}>sketch title: {props.sketch.sketchTitle}</Box>
+        <Box style={title}>
+          <span>
+            sketch title:
+            <InLineEdit
+              text={props.sketch.sketchTitle}
+              keyToEdit={"sketchTitle"}
+              obj={props.script}
+              scene={props.sketch}
+            />
+          </span>{" "}
+        </Box>
         <Box style={completed}>
           completed:{" "}
           <Checkbox color="default" checked={status} onChange={handleCheck} />
         </Box>
         <Box style={sketchBody}>
-          <div>script: {props.sketch.sketch}</div>
+          <div>
+            <span>
+              script:{" "}
+              <InLineEdit
+                text={props.sketch.sketch}
+                keyToEdit={"sketch"}
+                obj={props.script}
+                scene={props.sketch}
+              />
+            </span>
+          </div>
           <div>
             {props.sketch.actors.length === 1 ? "actor" : "actors"}:{" "}
             {props.sketch.actors.map((actor, index) => {
@@ -87,7 +112,17 @@ const Sketch = (props) => {
               );
             })}
           </div>
-          <div>camera shot(s): {props.sketch.shots} </div>
+          <div>
+            <span>
+              <label>camera shot(s):</label>{" "}
+              <InLineEdit
+                text={props.sketch.shots}
+                keyToEdit={"shots"}
+                obj={props.script}
+                scene={props.sketch}
+              />
+            </span>{" "}
+          </div>
         </Box>
       </Box>
     </div>

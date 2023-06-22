@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import CreateNewScript from "./components/routes/CreateNewScript";
 import scriptService from "./services/scripts";
+import Footer from "./components/Footer"
 
 const getRandomId = () => {
   return (Math.random() * 100000000).toString();
@@ -290,6 +291,7 @@ function App() {
           </Routes>
         </Router>
       </Container>
+      <Footer />
     </div>
   );
 }

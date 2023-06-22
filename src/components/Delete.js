@@ -18,7 +18,7 @@ const Delete = (props) => {
 
   return (
     <>
-      <Button variant="contained" onClick={() => handleDelete(props.script.id)}>Delete</Button>
+      <Button variant="outlined" onClick={() => handleDelete(props.script.id)} color="error">Delete</Button>
     </>
   );
 };

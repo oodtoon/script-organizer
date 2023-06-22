@@ -30,6 +30,8 @@
   border-radius: 4px;
 }
 
+
+
 /* filming scene */
 
 .scene-container {
@@ -38,24 +40,14 @@
   border: solid 3px black;
   justify-items: center;
   border-radius: 4px;
+  padding: 2em;
+  justify-items: stretch;
 }
 
 /* Sketch Card - might not be necessary? */
-/*
-.sketch-container {
-  display: grid;
-  grid-template-rows: 3em auto;
-  grid-template-columns: 1fr 1fr;
-  grid-template-areas: "title completed" "sketch sketch";
-  margin: 2em auto;
-  border: solid 3px black;
-  box-shadow: 0 0 0.5em;
-  justify-items: start;
-  padding: 2em;
-  border-radius: 4px;
-}
 
-.sketch-title {
+
+/*.sketch-title {
   grid-area: title;
 }
 
@@ -108,4 +100,17 @@
 
 .selector {
   margin: 1em;
+}
+
+/* inline edit */
+
+.inline-edit.hidden {
+  display: none;
+}
+
+/* footer */
+
+.footer {
+  background-color: black;
+  margin-top: 10em;
 }
