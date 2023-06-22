@@ -13,6 +13,7 @@ const Selector = (props) => {
           <Select
             labelId={props.id}
             id={props.id}
+            name={props.name}
             label={props.label}
             multiple={props.multiple}
             value={props.value}

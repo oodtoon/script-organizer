@@ -1,73 +1,55 @@
 import { useEffect, useState } from "react";
 import { Container } from "@mui/system";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Sketch from "./components/Sketch";
-import NewSketch from "./components/NewSketch";
-import Filters from "./components/Filters";
+import FilmingScript from "./components/routes/FilmingScript";
+import HomeScreen from "./components/routes/HomeScreen";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-
-const exScript = {
-  title: "crazy times!",
-  scenes: [
-    {
-      sketch: "hello! hello!",
-      sketchTitle: "Crazy",
-      actors: ["sean", "beth"],
-      shots: "pan up",
-      completed: false,
-      visible: true,
-      id: "1",
-    },
-    {
-      sketch: "bye bye bye!",
-      sketchTitle: "time",
-      actors: ["gwen", "stephan", "gringo"],
-      shots: "pan down",
-      completed: false,
-      visible: true,
-      id: "2",
-    },
-    {
-      sketch: "geroge you bastard",
-      sketchTitle: "once crazy",
-      actors: ["gringo", "beth"],
-      shots: "pan left",
-      completed: false,
-      visible: true,
-      id: "3",
-    },
-    {
-      sketch: "flamoyantly writing this because that's a fun word!",
-      sketchTitle: "always crazy",
-      actors: ["Rosco", "Turner", "Astor"],
-      shots: "pan right",
-      completed: false,
-      visible: true,
-      id: "4",
-    },
-    {
-      sketch: "At the end eh?",
-      sketchTitle: "verruckt",
-      actors: ["sean", "beth"],
-      shots: "full tablle",
-      completed: true,
-      visible: true,
-      id: "5",
-    },
-  ],
-};
+import CreateNewScript from "./components/routes/CreateNewScript";
+import scriptService from "./services/scripts";
 
 const getRandomId = () => {
   return (Math.random() * 100000000).toString();
 };
 
 function App() {
-  const [script, setScript] = useState(exScript);
+  const [allScripts, setAllScripts] = useState([]);
+
+  useEffect(() => {
+    scriptService.getAll().then((response) => {
+      setAllScripts(response.data);
+    });
+  }, []);
+
+  const [script, setScript] = useState();
+
+  useEffect(() => {
+    const selectedId = localStorage.getItem("selectedScript");
+
+    if (selectedId) {
+      const parsedId = JSON.parse(selectedId);
+
+      const selectedScript = allScripts.find(
+        (script) => script.id === parsedId
+      );
+
+      setScript(selectedScript);
+    }
+  }, [allScripts]);
+
+
+
+
   const [sketch, setSketch] = useState("");
-  const [actors, setActors] = useState([]);
+  const [actors, setActors] = useState([""]);
+  const [totalActors, setTotalActors] = useState([1]);
   const [shots, setShots] = useState("");
   const [sketchTitle, setSketchTitle] = useState("");
+
   const [isFilterChange, setIsFilterChange] = useState(false);
+  const [isDraft, setIsDraft] = useState(false);
+
+  const [uniqueTotalActors, setUniqueTotalActors] = useState([]);
+  const [uniqueActorsInScene, setUniqueActorsInScene] = useState([]);
 
   const handleDragDrop = (result) => {
     const { source, destination, type } = result;
@@ -97,11 +79,17 @@ function App() {
     }
   };
 
-  const totalActorsInScene = script.scenes.map((scene) => scene.actors.length);
-  const uniqueTotalActors = [...new Set(totalActorsInScene)].sort();
+  useEffect(() => {
+    if (script && script.scenes) {
+      const totalActorsInScene = script.scenes.map(
+        (scene) => scene.actors.length
+      );
+      setUniqueTotalActors([...new Set(totalActorsInScene)].sort());
 
-  const actorsInScene = script.scenes.flatMap((scene) => scene.actors);
-  const uniqueActorsInScene = [...new Set(actorsInScene)];
+      const actorsInScene = script.scenes.flatMap((scene) => scene.actors);
+      setUniqueActorsInScene([...new Set(actorsInScene)]);
+    }
+  }, [script]);
 
   const sketchStatus = ["Complete", "Incomeple", "All"];
 
@@ -165,7 +153,7 @@ function App() {
 
       setIsFilterChange(false);
     }
-  }, [isFilterChange, numberFilter, nameFilter, statusFilter, script.scenes]);
+  }, [isFilterChange, numberFilter, nameFilter, statusFilter, script]);
 
   const handleSketchTitle = (event) => {
     setSketchTitle(event.target.value);
@@ -185,7 +173,7 @@ function App() {
     setActors(enteredData);
   };
 
-  const newSketch = (event) => {
+  const newSketch = (event, id) => {
     event.preventDefault();
 
     const sceneObj = {
@@ -193,96 +181,114 @@ function App() {
       sketchTitle: sketchTitle,
       actors: actors,
       shots: shots,
+      completed: false,
+      visible: true,
       id: getRandomId(),
     };
 
-    const newScene = { ...script, scenes: script.scenes.concat(sceneObj) };
-    setScript(newScene);
-    setActors([1]);
+    const scriptToUpdate = allScripts.find((script) => script.id === id);
+    const newScene = {
+      ...scriptToUpdate,
+      scenes: scriptToUpdate.scenes.concat(sceneObj),
+    };
+    scriptService.update(id, newScene).then((response) => {
+      setScript(response.data);
+    });
+    setActors([""]);
     setShots("");
     setSketch("");
+    setSketchTitle("");
+    setTotalActors([1]);
   };
-
-  const completedScenes = script.scenes.filter(
-    (sketch) => sketch.completed === true
-  ).length;
 
   return (
     <div>
       <Container>
-        <Filters
-          actors={uniqueActorsInScene}
-          total={uniqueTotalActors}
-          sketchStatus={sketchStatus}
-          numberFilter={numberFilter}
-          nameFilter={nameFilter}
-          statusFilter={statusFilter}
-          setIsFilterChange={setIsFilterChange}
-          setStatusFiler={setStatusFiler}
-          setNumberFilter={setNumberFilter}
-          setNameFilter={setNameFilter}
-          handleNameFilter={handleNameFilter}
-          handleNumberFilter={handleNumberFilter}
-          handleStatusFilter={handleStatusFilter}
-        />
-        <div className="scene-container">
-          <h1 className="title">{script.title}</h1>
-          <div>
-            <span>total scenes: {script.scenes.length}</span>{" "}
-            <span>scenes completed: {completedScenes}</span>{" "}
-            <span>
-              scenes remaining: {script.scenes.length - completedScenes}
-            </span>
-          </div>
-
-          <DragDropContext onDragEnd={handleDragDrop}>
-            <Droppable droppableId="ROOT" type="group">
-              {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef}>
-                  {script.scenes !== undefined &&
-                    script.scenes.map((sketch, index) => {
-                      return (
-                        <Draggable
-                          draggableId={sketch.id}
-                          key={sketch.id}
-                          index={index}
-                        >
-                          {(provided) => (
-                            <div
-                              {...provided.draggableProps}
-                              ref={provided.innerRef}
-                            >
-                              <Sketch
-                                key={sketch.id}
-                                sketch={sketch}
-                                provided={provided}
-                              />
-                            </div>
-                          )}
-                        </Draggable>
-                      );
-                    })}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </div>
-        <NewSketch
-          sketch={sketch}
-          setSketch={setSketch}
-          actors={actors}
-          setActors={setActors}
-          shots={shots}
-          setShots={setShots}
-          sketchTitle={sketchTitle}
-          setSketchTitle={setSketchTitle}
-          handleActors={handleActors}
-          handleSketch={handleSketch}
-          handleShots={handleShots}
-          handleSketchTitle={handleSketchTitle}
-          newSketch={newSketch}
-        />
+        <Router>
+          <Routes>
+            <Route
+              path="/script"
+              element={
+                <FilmingScript
+                  uniqueActors={uniqueActorsInScene}
+                  total={uniqueTotalActors}
+                  sketchStatus={sketchStatus}
+                  numberFilter={numberFilter}
+                  nameFilter={nameFilter}
+                  statusFilter={statusFilter}
+                  sketch={sketch}
+                  actors={actors}
+                  shots={shots}
+                  sketchTitle={sketchTitle}
+                  script={script}
+                  totalActors={totalActors}
+                  isDraft={isDraft}
+                  allScripts={allScripts}
+                  setAllScripts={setAllScripts}
+                  setIsDraft={setIsDraft}
+                  setIsFilterChange={setIsFilterChange}
+                  setStatusFiler={setStatusFiler}
+                  setNumberFilter={setNumberFilter}
+                  setNameFilter={setNameFilter}
+                  handleNameFilter={handleNameFilter}
+                  handleNumberFilter={handleNumberFilter}
+                  handleStatusFilter={handleStatusFilter}
+                  setSketch={setSketch}
+                  setActors={setActors}
+                  setTotalActors={setTotalActors}
+                  setShots={setShots}
+                  setSketchTitle={setSketchTitle}
+                  handleActors={handleActors}
+                  handleSketch={handleSketch}
+                  handleShots={handleShots}
+                  handleSketchTitle={handleSketchTitle}
+                  handleDragDrop={handleDragDrop}
+                  setScript={setScript}
+                  newSketch={newSketch}
+                />
+              }
+            />
+            <Route
+              path="/"
+              element={
+                <HomeScreen
+                  allScripts={allScripts}
+                  setScript={setScript}
+                  setIsDraft={setIsDraft}
+                />
+              }
+            />
+            <Route
+              path="newscript"
+              element={
+                <CreateNewScript
+                  totalActors={totalActors}
+                  sketch={sketch}
+                  actors={actors}
+                  shots={shots}
+                  sketchTitle={sketchTitle}
+                  isDraft={isDraft}
+                  script={script}
+                  allScripts={allScripts}
+                  setAllScripts={setAllScripts}
+                  setIsDraft={setIsDraft}
+                  setTotalActors={setTotalActors}
+                  setShots={setShots}
+                  setSketch={setSketch}
+                  setActors={setActors}
+                  setSketchTitle={setSketchTitle}
+                  handleActors={handleActors}
+                  handleSketch={handleSketch}
+                  handleShots={handleShots}
+                  handleSketchTitle={handleSketchTitle}
+                  handleDragDrop={handleDragDrop}
+                  setScript={setScript}
+                  newSketch={newSketch}
+                />
+              }
+            />
+          </Routes>
+        </Router>
       </Container>
     </div>
   );

@@ -1,8 +1,12 @@
 import Checkbox from "@mui/material/Checkbox";
 import { Box } from "@mui/material";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import { useState } from "react";
+import scriptService from "../services/scripts";
 
 const Sketch = (props) => {
+  const [status, setStatus] = useState(props.sketch.completed);
+
   const isVisible = {
     display: props.sketch.visible === true ? "grid" : "none",
     gridTemplateRows: "3em auto",
@@ -29,13 +33,34 @@ const Sketch = (props) => {
     gridArea: "sketch",
   };
 
-const drag = {
-  gridArea: "drag",
-  cursor: "move",
-}
+  const drag = {
+    gridArea: "drag",
+    cursor: "move",
+  };
 
   const DragHandle = () => {
-    return <div style={drag}><DragIndicatorIcon/></div>;
+    return (
+      <div style={drag}>
+        <DragIndicatorIcon />
+      </div>
+    );
+  };
+
+
+  
+  const handleCheck = (event) => {
+    const checkedSketch = { ...props.sketch, completed: event.target.checked };
+
+    const updatedObj = {
+      ...props.script,
+      scenes: props.script.scenes.map((sketch) => sketch.id !== props.sketch.id ? sketch : checkedSketch)
+    }
+  
+    scriptService.update(props.script.id, updatedObj).then(response => {
+      props.setScript(response.data)
+    });
+
+    setStatus(event.target.checked);
   };
 
   return (
@@ -46,7 +71,8 @@ const drag = {
         </div>
         <Box style={title}>sketch title: {props.sketch.sketchTitle}</Box>
         <Box style={completed}>
-          completed: <Checkbox color="default" checked={props.sketch.completed}/>
+          completed:{" "}
+          <Checkbox color="default" checked={status} onChange={handleCheck} />
         </Box>
         <Box style={sketchBody}>
           <div>script: {props.sketch.sketch}</div>

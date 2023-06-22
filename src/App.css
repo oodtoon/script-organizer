@@ -1,3 +1,37 @@
+/* Home screen */
+
+.home-container {
+  display: grid;
+  margin: 5em auto;
+  border: solid 3px black;
+  justify-items: center;
+  border-radius: 4px;
+  padding-bottom: 2em;
+}
+
+/* Script Creation */
+
+.create-container {
+  display: grid;
+  margin: 2em auto;
+  border: solid 3px black;
+  justify-items: start;
+  padding: 2em 2em;
+  border-radius: 4px;
+}
+
+/* editing script */
+
+.script-container {
+  display: grid;
+  margin: auto;
+  border: solid 3px black;
+  justify-items: center;
+  border-radius: 4px;
+}
+
+/* filming scene */
+
 .scene-container {
   display: grid;
   margin: auto;
@@ -6,7 +40,7 @@
   border-radius: 4px;
 }
 
-/* Sketch Card - might not be necessary? */ 
+/* Sketch Card - might not be necessary? */
 /*
 .sketch-container {
   display: grid;
@@ -33,16 +67,18 @@
 .sketch-body {
   grid-area: sketch;
 }*/
-/* Sketch Form */ 
+/* Sketch Form */
 
 .new-sketch-form {
   display: grid;
   margin: 2em auto;
   border: solid 3px black;
   justify-items: start;
-  padding: 2em;
+  padding: 2em 2em;
   border-radius: 4px;
 }
+
+/* Filter */
 
 .filter-container {
   display: grid;
@@ -51,6 +87,21 @@
   justify-items: center;
   border-radius: 4px;
   padding: 1em 2em 4em 2em;
+}
+
+.actor-btn-container {
+  display: inline-grid;
+  grid-template-areas: "plus" "minus";
+  margin: auto 1em;
+  gap: 0.5em;
+}
+
+.plus {
+  grid-area: plus;
+}
+
+.minus {
+  grid-area: minus;
 }
 
 /* SELECTOR */
