@@ -28,17 +28,21 @@ const FilmingScript = (props) => {
         <Filters
           actors={props.uniqueActors}
           total={props.total}
+          locations={props.uniqueLocations}
           sketchStatus={props.sketchStatus}
           numberFilter={props.numberFilter}
           nameFilter={props.nameFilter}
           statusFilter={props.statusFilter}
+          locationFilter={props.locationFilter}
           setIsFilterChange={props.setIsFilterChange}
           setStatusFiler={props.setStatusFiler}
           setNumberFilter={props.setNumberFilter}
           setNameFilter={props.setNameFilter}
+          setLocationFilter={props.setLocationFilter}
           handleNameFilter={props.handleNameFilter}
           handleNumberFilter={props.handleNumberFilter}
           handleStatusFilter={props.handleStatusFilter}
+          handleLocationFilter={props.handleLocationFilter}
         />
       )}
       <div className="scene-container">
@@ -104,6 +108,9 @@ const FilmingScript = (props) => {
         setTotalActors={props.setTotalActors}
         newSketch={props.newSketch}
         script={props.script}
+        location={props.location}
+        setLocation={props.setLocation}
+        handleLocation={props.handleLocation}
       />
       <Delete script={props.script} setAllScripts={props.setAllScripts} allScripts={props.allScripts}/>
     </div>

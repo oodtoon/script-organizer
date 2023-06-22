@@ -2,12 +2,13 @@ import Selector from "./Selector";
 import { Button } from "@mui/material";
 
 const Filters = (props) => {
-    const handleFilterReset = () => {
-        props.setNameFilter([])
-        props.setStatusFiler("All")
-        props.setNumberFilter("")
-        props.setIsFilterChange(true)
-    }
+  const handleFilterReset = () => {
+    props.setNameFilter([]);
+    props.setStatusFiler("All");
+    props.setNumberFilter("");
+    props.setLocationFilter("All");
+    props.setIsFilterChange(true);
+  };
 
   return (
     <>
@@ -44,7 +45,21 @@ const Filters = (props) => {
               handleFilter={props.handleStatusFilter}
             />
           </span>
-          <span><Button variant="contained" onClick={handleFilterReset}>Reset Filters</Button></span>
+          <span>
+            <Selector
+              id={"location"}
+              label={"Location"}
+              value={props.locationFilter}
+              multiple={false}
+              fieldToFilter={[...props.locations, "All"]}
+              handleFilter={props.handleLocationFilter}
+            />
+          </span>
+          <span>
+            <Button variant="contained" onClick={handleFilterReset}>
+              Reset Filters
+            </Button>
+          </span>
         </div>
       </div>
     </>

@@ -3,7 +3,7 @@ import { TextField } from "@mui/material";
 import scriptService from "../services/scripts";
 import "../App.css";
 
-const InLineEdit = ({ text, keyToEdit, obj, scene }) => {
+const InLineEdit = ({ text, keyToEdit, obj, scene, index }) => {
   const [textEdit, setTextEdit] = useState(text);
   const [isInputHidden, setIsInputHidden] = useState(true);
   const inputRef = useRef(null);
@@ -19,24 +19,48 @@ const InLineEdit = ({ text, keyToEdit, obj, scene }) => {
   };
 
   const blurHandler = (event) => {
-    const updatedLine = { ...scene, [keyToEdit]: textEdit };
-
-    const updatedScenes = obj.scenes.map((scene) =>
-      scene.id !== updatedLine.id ? scene : updatedLine
-    );
-
-    const scriptObj = {
-      ...obj,
-      scenes: updatedScenes,
-    };
     if (textEdit !== text) {
-      scriptService.update(obj.id, scriptObj).then((response) => {
-        setIsInputHidden(true);
-        const replaceText = response.data.scenes.find(
-          (scene) => scene.id === updatedLine.id
+      if (keyToEdit === "actors") {
+        const updatedActorsArr = scene.actors.map((actor) =>
+          actor === text ? textEdit : actor
         );
-        setTextEdit(replaceText[keyToEdit]);
-      });
+        const updatedActor = { ...scene, actors: updatedActorsArr };
+
+        const updatedSketches = obj.scenes.map((scene) =>
+          scene.id !== updatedActor.id ? scene : updatedActor
+        );
+
+        const scriptObj = {
+          ...obj,
+          scenes: updatedSketches,
+        };
+        scriptService.update(obj.id, scriptObj).then((response) => {
+          setIsInputHidden(true);
+          const replaceText = response.data.scenes.find(
+            (scene) => scene.id === updatedActor.id
+          );
+          setTextEdit(replaceText.actors[index]);
+        });
+      } else {
+        const updatedLine = { ...scene, [keyToEdit]: textEdit };
+
+        const updatedScenes = obj.scenes.map((scene) =>
+          scene.id !== updatedLine.id ? scene : updatedLine
+        );
+
+        const scriptObj = {
+          ...obj,
+          scenes: updatedScenes,
+        };
+
+        scriptService.update(obj.id, scriptObj).then((response) => {
+          setIsInputHidden(true);
+          const replaceText = response.data.scenes.find(
+            (scene) => scene.id === updatedLine.id
+          );
+          setTextEdit(replaceText[keyToEdit]);
+        });
+      }
     } else {
       setIsInputHidden(true);
     }

@@ -78,6 +78,14 @@ const NewSketch = (props) => {
         </span>
       </div>
       <TextField
+        onChange={props.handleLocation}
+        value={props.location}
+        fullWidth
+        multiline
+        label="Location"
+        style={textFieldStyle}
+      />
+      <TextField
         onChange={props.handleShots}
         value={props.shots}
         fullWidth

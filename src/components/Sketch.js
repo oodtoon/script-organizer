@@ -24,7 +24,7 @@ const Sketch = (props) => {
   const title = {
     gridArea: "title",
     textDecoration: props.sketch.completed === true ? "line-through" : "none",
-    display: "grid"
+    display: "grid",
   };
 
   const completed = {
@@ -35,7 +35,7 @@ const Sketch = (props) => {
   const sketchBody = {
     gridArea: "sketch",
     textDecoration: props.sketch.completed === true ? "line-through" : "none",
-    display: "grid"
+    display: "grid",
   };
 
   const drag = {
@@ -105,12 +105,26 @@ const Sketch = (props) => {
             {props.sketch.actors.length === 1 ? "actor" : "actors"}:{" "}
             {props.sketch.actors.map((actor, index) => {
               return (
-                <span key={index}>
-                  {actor}
-                  {index === props.sketch.actors.length - 1 ? "." : ","}{" "}
-                </span>
+                <div key={index}>
+                  <InLineEdit
+                    text={actor}
+                    keyToEdit={"actors"}
+                    obj={props.script}
+                    scene={props.sketch}
+                    index={index}
+                  />
+                </div>
               );
             })}
+          </div>
+          <div>
+            <label>location:</label>{" "}
+            <InLineEdit
+              text={props.sketch.location}
+              keyToEdit={"location"}
+              obj={props.script}
+              scene={props.sketch}
+            />
           </div>
           <div>
             <span>

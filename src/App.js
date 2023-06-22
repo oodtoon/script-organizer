@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import CreateNewScript from "./components/routes/CreateNewScript";
 import scriptService from "./services/scripts";
-import Footer from "./components/Footer"
+import Footer from "./components/Footer";
 
 const getRandomId = () => {
   return (Math.random() * 100000000).toString();
@@ -37,20 +37,19 @@ function App() {
     }
   }, [allScripts]);
 
-
-
-
   const [sketch, setSketch] = useState("");
   const [actors, setActors] = useState([""]);
   const [totalActors, setTotalActors] = useState([1]);
   const [shots, setShots] = useState("");
   const [sketchTitle, setSketchTitle] = useState("");
+  const [location, setLocation] = useState("");
 
   const [isFilterChange, setIsFilterChange] = useState(false);
   const [isDraft, setIsDraft] = useState(false);
 
   const [uniqueTotalActors, setUniqueTotalActors] = useState([]);
   const [uniqueActorsInScene, setUniqueActorsInScene] = useState([]);
+  const [uniqueLocations, setUniqueLocations] = useState([]);
 
   const handleDragDrop = (result) => {
     const { source, destination, type } = result;
@@ -89,6 +88,9 @@ function App() {
 
       const actorsInScene = script.scenes.flatMap((scene) => scene.actors);
       setUniqueActorsInScene([...new Set(actorsInScene)]);
+
+      const sketchLocations = script.scenes.map((scene) => scene.location);
+      setUniqueLocations([...new Set(sketchLocations)].sort());
     }
   }, [script]);
 
@@ -97,6 +99,7 @@ function App() {
   const [numberFilter, setNumberFilter] = useState("");
   const [nameFilter, setNameFilter] = useState([]);
   const [statusFilter, setStatusFiler] = useState("All");
+  const [locationFilter, setLocationFilter] = useState("All");
 
   const handleNumberFilter = (event) => {
     setNumberFilter(event.target.value);
@@ -113,6 +116,11 @@ function App() {
       target: { value },
     } = event;
     setNameFilter(typeof value === "string" ? value.split(",") : value);
+    setIsFilterChange(true);
+  };
+
+  const handleLocationFilter = (event) => {
+    setLocationFilter(event.target.value);
     setIsFilterChange(true);
   };
 
@@ -139,6 +147,10 @@ function App() {
           } else {
             isVisible = nameFilter.every((name) => scene.actors.includes(name));
           }
+        }
+
+        if (isVisible && locationFilter !== "All" && locationFilter !== "") {
+          isVisible = scene.location === locationFilter ? true : false;
         }
 
         return {
@@ -168,6 +180,10 @@ function App() {
     setShots(event.target.value);
   };
 
+  const handleLocation = (event) => {
+    setLocation(event.target.value);
+  };
+
   const handleActors = (event, index) => {
     const enteredData = [...actors];
     enteredData[index] = event.target.value;
@@ -178,9 +194,10 @@ function App() {
     event.preventDefault();
 
     const sceneObj = {
-      sketch: sketch,
       sketchTitle: sketchTitle,
+      sketch: sketch,
       actors: actors,
+      location: location,
       shots: shots,
       completed: false,
       visible: true,
@@ -200,6 +217,7 @@ function App() {
     setSketch("");
     setSketchTitle("");
     setTotalActors([1]);
+    setLocation("");
   };
 
   return (
@@ -217,6 +235,7 @@ function App() {
                   numberFilter={numberFilter}
                   nameFilter={nameFilter}
                   statusFilter={statusFilter}
+                  locationFilter={locationFilter}
                   sketch={sketch}
                   actors={actors}
                   shots={shots}
@@ -225,15 +244,21 @@ function App() {
                   totalActors={totalActors}
                   isDraft={isDraft}
                   allScripts={allScripts}
+                  location={location}
+                  uniqueLocations={uniqueLocations}
+                  setLocation={setLocation}
+                  handleLocation={handleLocation}
                   setAllScripts={setAllScripts}
                   setIsDraft={setIsDraft}
                   setIsFilterChange={setIsFilterChange}
                   setStatusFiler={setStatusFiler}
                   setNumberFilter={setNumberFilter}
                   setNameFilter={setNameFilter}
+                  setLocationFilter={setLocationFilter}
                   handleNameFilter={handleNameFilter}
                   handleNumberFilter={handleNumberFilter}
                   handleStatusFilter={handleStatusFilter}
+                  handleLocationFilter={handleLocationFilter}
                   setSketch={setSketch}
                   setActors={setActors}
                   setTotalActors={setTotalActors}
