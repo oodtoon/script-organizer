@@ -71,11 +71,13 @@ function App() {
       reorderedScenes.splice(destinationIndex, 0, removedSketch);
 
       const updatedScript = {
-        title: script.title,
+        ...script,
         scenes: reorderedScenes,
       };
 
-      return setScript(updatedScript);
+      scriptService.update(updatedScript.id, updatedScript).then((response) => {
+        setScript(response.data);
+      });
     }
   };
 

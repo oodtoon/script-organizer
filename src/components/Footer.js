@@ -13,7 +13,7 @@ const Footer = () => {
 
   const toggleIce = () => {
     setIsIce(prev => !prev)
-    console.log("i lost")
+ 
   }
 
   const msg = isIce === true ? "Don't forget your ice cream" : "I lost the game"

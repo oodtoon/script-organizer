@@ -39,7 +39,9 @@ const FilmingScript = (props) => {
     return <div>loading one moment</div>;
   }
 
- 
+ const mTSyle = {
+  marginTop: props.isDraft === true ? "4em" : "0"
+ }
 
   return (
     <div>
@@ -67,7 +69,7 @@ const FilmingScript = (props) => {
           handleLocationFilter={props.handleLocationFilter}
         />
       )}
-      <div className="scene-container">
+      <div className="scene-container" style={mTSyle}>
         <div className="script-delete-btn">
           <Delete
             script={props.script}
