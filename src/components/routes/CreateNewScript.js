@@ -5,6 +5,22 @@ import { useNavigate } from "react-router-dom";
 import "../../App.css";
 import HomeButton from "../HomeButton";
 
+import { styled } from "@mui/material/styles";
+
+
+const CustomButton = styled(Button)(({ theme }) => ({
+  backgroundColor: "black",
+  borderRadius: "0px",
+  fontWeight: "700",
+  "&:hover": {
+    backgroundColor: "white",
+    border: "3px solid black",
+    color: "black", 
+    boxShadow: ".5em .5em hotpink"
+  },
+}));
+
+
 const randomId = () => {
   return (Math.random() * 100000000).toString();
 };
@@ -42,24 +58,27 @@ const CreateNewScript = (props) => {
 
   return (
     <>
-      <HomeButton place="Back" />
-      <form className="create-container" onSubmit={newVideoScript}>
-        <h1>Create A New Video Script</h1>
-
-        <TextField
-          label="Video Title"
-          required
-          fullWidth
-          multiline
-          onChange={handleTitle}
-          value={title}
-        />
-        <div>
-          <Button variant="contained" sx={{ mt: "2em" }} type="submit">
-            Create Video Script
-          </Button>
-        </div>
-      </form>
+      <div className="home-btn-container">
+        <HomeButton place="Back" />
+      </div>
+      <div className="new-create-page">
+        <form className="create-container" onSubmit={newVideoScript}>
+          <h1>Create A New Video Script</h1>
+          <TextField
+            label="Video Title"
+            required
+            fullWidth
+            multiline
+            onChange={handleTitle}
+            value={title}
+          />
+          <div className="create-btn">
+            <CustomButton variant="contained"  type="submit">
+              Create Video Script
+            </CustomButton>
+          </div>
+        </form>
+      </div>
     </>
   );
 };

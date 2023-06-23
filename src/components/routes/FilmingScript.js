@@ -1,13 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Filters from "../Filters";
 import NewSketch from "../NewSketch";
 import Sketch from "../Sketch";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import HomeButton from "../HomeButton";
 import Delete from "../Delete";
+import BackToTop from "../BackToTop";
+import "../../App.css";
 
 const FilmingScript = (props) => {
   const [completedScenes, setCompletedScenes] = useState(0);
+
+  const [isScroll, setIsScroll] = useState(false);
+
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (isScroll === true) {
+      el.scrollIntoView({ behavior: "smooth" });
+      setIsScroll(false);
+    }
+  }, [isScroll]);
+
+  const handleScroll = () => {
+    setIsScroll(true);
+  };
 
   useEffect(() => {
     if (props.script) {
@@ -21,9 +39,13 @@ const FilmingScript = (props) => {
     return <div>loading one moment</div>;
   }
 
+ 
+
   return (
     <div>
-      <HomeButton place="Home" />
+      <div className="home-btn-container" ref={scrollRef}>
+        <HomeButton place="Home" />
+      </div>
       {props.isDraft === false && (
         <Filters
           actors={props.uniqueActors}
@@ -46,13 +68,22 @@ const FilmingScript = (props) => {
         />
       )}
       <div className="scene-container">
+        <div className="script-delete-btn">
+          <Delete
+            script={props.script}
+            setAllScripts={props.setAllScripts}
+            allScripts={props.allScripts}
+            type={"script"}
+          />
+        </div>
         <h1 className="title">{props.script.title}</h1>
+
         {props.isDraft === false && (
-          <div>
-            <span>total scenes: {props.script.scenes.length}</span>{" "}
-            <span>scenes completed: {completedScenes}</span>{" "}
-            <span>
-              scenes remaining: {props.script.scenes.length - completedScenes}
+          <div className="scene-count">
+            <span >total scenes: {props.script.scenes.length}</span>{" "}
+            <span >completed: {completedScenes}</span>{" "}
+            <span >
+              remaining: {props.script.scenes.length - completedScenes}
             </span>
           </div>
         )}
@@ -112,7 +143,7 @@ const FilmingScript = (props) => {
         setLocation={props.setLocation}
         handleLocation={props.handleLocation}
       />
-      <Delete script={props.script} setAllScripts={props.setAllScripts} allScripts={props.allScripts}/>
+      <BackToTop handleScroll={handleScroll}/>
     </div>
   );
 };

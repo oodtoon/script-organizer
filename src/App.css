@@ -1,23 +1,122 @@
 /* Home screen */
 
+.home-page {
+  height: 75vh;
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+
 .home-container {
   display: grid;
-  margin: 5em auto;
+  place-self: center;
+  grid-template-columns: 1fr 2fr;
+  grid-template-areas: "org org" "new new" "lab1 sel1" "lab2 sel2";
   border: solid 3px black;
   justify-items: center;
   border-radius: 4px;
-  padding-bottom: 2em;
+  padding: 0 5em 2em 5em;
+  box-shadow: blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px,
+    rgb(31, 193, 27) 10px -10px, rgb(255, 255, 255) 20px -20px 0px -3px,
+    rgb(255, 217, 19) 20px -20px, rgb(255, 255, 255) 30px -30px 0px -3px,
+    rgb(255, 156, 85) 30px -30px, rgb(255, 255, 255) 40px -40px 0px -3px,
+    rgb(255, 85, 85) 40px -40px;
+}
+
+.home-title {
+  grid-area: org;
+}
+
+.new {
+  font-size: 1.2rem;
+  grid-area: new;
+  margin: 2em;
+}
+
+.link-container {
+  display: inline-grid;
+  place-items: center;
+  height: 70px;
+  width: 130px;
+}
+
+.new-link {
+  color: white;
+  background-color: black;
+  padding: 0.5em;
+  font-weight: 500;
+}
+
+.new-link:hover {
+  color: black;
+  background-color: white;
+  border: 3px solid black;
+  box-shadow: 0.5em 0.5em hotpink;
+  padding: 0.4em;
+}
+
+.continue-label {
+  grid-area: lab1;
+  justify-self: start;
+  font-size: 1.2rem;
+}
+
+.continue-select {
+  grid-area: sel1;
+}
+
+.film-label {
+  grid-area: lab2;
+  justify-self: start;
+  font-size: 1.2rem;
+}
+
+.film-select {
+  grid-area: sel2;
+}
+
+.home-btn-container {
+  margin-top: 2em;
+}
+
+.home-btn {
+  color: white;
+  background-color: black;
+  padding: 0.5em;
+  font-weight: 500;
+  box-shadow: rgba(240, 46, 170, 0.4) -5px 5px,
+    rgba(240, 46, 170, 0.3) -10px 10px, rgba(240, 46, 170, 0.2) -15px 15px,
+    rgba(240, 46, 170, 0.1) -20px 20px, rgba(240, 46, 170, 0.05) -25px 25px;
+}
+
+.home-btn:hover {
+  color: black;
+  background-color: white;
+  border: 3px solid black;
+  padding: 0.4em;
+  font-weight: 500;
+  box-shadow: rgba(240, 46, 170, 0.4) -5px 5px,
+    rgba(240, 46, 170, 0.3) -10px 10px, rgba(240, 46, 170, 0.2) -15px 15px,
+    rgba(240, 46, 170, 0.1) -20px 20px, rgba(240, 46, 170, 0.05) -25px 25px;
 }
 
 /* Script Creation */
 
+
+
 .create-container {
   display: grid;
-  margin: 2em auto;
+  gap: 1em;
+  margin: 8em auto;
   border: solid 3px black;
   justify-items: start;
   padding: 2em 2em;
   border-radius: 4px;
+  box-shadow: blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px,
+    rgb(31, 193, 27) 10px -10px, rgb(255, 255, 255) 20px -20px 0px -3px,
+    rgb(255, 217, 19) 20px -20px, rgb(255, 255, 255) 30px -30px 0px -3px,
+    rgb(255, 156, 85) 30px -30px, rgb(255, 255, 255) 40px -40px 0px -3px,
+    rgb(255, 85, 85) 40px -40px;
 }
 
 /* editing script */
@@ -30,13 +129,11 @@
   border-radius: 4px;
 }
 
-
-
 /* filming scene */
 
 .scene-container {
   display: grid;
-  margin: auto;
+  margin: 2em auto;
   border: solid 3px black;
   justify-items: center;
   border-radius: 4px;
@@ -44,8 +141,18 @@
   justify-items: stretch;
 }
 
-/* Sketch Card - might not be necessary? */
+.scene-count {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 60%;
+}
 
+.script-delete-btn {
+  justify-self: end;
+}
+
+/* Sketch Card - might not be necessary? */
 
 /*.sketch-title {
   grid-area: title;
@@ -63,37 +170,42 @@
 
 .new-sketch-form {
   display: grid;
-  margin: 2em auto;
-  border: solid 3px black;
   justify-items: start;
+  margin: auto auto 6em auto;
+  border: solid 3px black;
   padding: 2em 2em;
   border-radius: 4px;
+  gap: 1em;
+}
+
+.plus {
+  margin-right: 0.5em;
+}
+
+.create-btn {
+  display: grid;
+  height: 3em;
 }
 
 /* Filter */
 
 .filter-container {
   display: grid;
-  margin: 2em auto;
+  margin: 5em auto 2em auto;
   border: solid 3px black;
   justify-items: center;
   border-radius: 4px;
   padding: 1em 2em 4em 2em;
+  box-shadow: blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px,
+    rgb(31, 193, 27) 10px -10px, rgb(255, 255, 255) 20px -20px 0px -3px,
+    rgb(255, 217, 19) 20px -20px, rgb(255, 255, 255) 30px -30px 0px -3px,
+    rgb(255, 156, 85) 30px -30px, rgb(255, 255, 255) 40px -40px 0px -3px,
+    rgb(255, 85, 85) 40px -40px;
 }
 
-.actor-btn-container {
-  display: inline-grid;
-  grid-template-areas: "plus" "minus";
-  margin: auto 1em;
-  gap: 0.5em;
-}
-
-.plus {
-  grid-area: plus;
-}
-
-.minus {
-  grid-area: minus;
+.filter-btn {
+  display: flex;
+  height: 3em;
 }
 
 /* SELECTOR */
@@ -108,9 +220,45 @@
   display: none;
 }
 
+/* scroll link */
+
+.scroll-link {
+  color: white;
+  background-color: black;
+  padding: 0.5em;
+  font-weight: 500;
+}
+
+.scroll-link:hover {
+  color: black;
+  background-color: white;
+  padding: 0.5em;
+  font-weight: 500;
+  border: 3px solid black;
+  box-shadow: rgba(240, 46, 170, 0.4) -5px 5px,
+    rgba(240, 46, 170, 0.3) -10px 10px, rgba(240, 46, 170, 0.2) -15px 15px,
+    rgba(240, 46, 170, 0.1) -20px 20px, rgba(240, 46, 170, 0.05) -25px 25px;
+}
+
 /* footer */
 
 .footer {
+  display: grid;
   background-color: black;
-  margin-top: 10em;
+  color: white;
+  margin-top: 5em;
+  padding: 5em;
+}
+
+.foot-msg {
+  place-self: center;
+}
+
+.ice {
+  color: white;
+  background-color: black;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  margin-left: 1em;
 }

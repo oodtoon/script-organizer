@@ -1,10 +1,41 @@
 import { Button, TextField } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import "../App.css";
 
-const NewSketch = (props) => {
+import { styled } from "@mui/material/styles";
 
+const CustomButton = styled(Button)(({ theme }) => ({
+  backgroundColor: "black",
+  borderRadius: "0px",
+  fontWeight: "700",
+  "&:hover": {
+    backgroundColor: "white",
+    border: "3px solid black",
+    color: "black",
+    boxShadow: ".5em .5em hotpink",
+  },
+}));
+
+const ActorButton = styled(Button)(({ theme }) => ({
+  backgroundColor: "black",
+  borderRadius: "0px",
+  fontWeight: "700",
+  "&:hover": {
+    backgroundColor: "white",
+    border: "3px solid black",
+    color: "black",
+    boxShadow: ".5em .5em hotpink",
+    padding: ".1em",
+  },
+}));
+
+const NewSketch = (props) => {
   const handleAddActorTextField = () => {
-    props.setTotalActors([...props.totalActors, props.totalActors[props.totalActors.length - 1] + 1]);
+    props.setTotalActors([
+      ...props.totalActors,
+      props.totalActors[props.totalActors.length - 1] + 1,
+    ]);
   };
 
   const handleRemoveActorTextField = () => {
@@ -21,11 +52,14 @@ const NewSketch = (props) => {
   };
 
   const textFieldStyle = {
-    margin: "1em",
+    alignSelf: "start",
   };
 
   return (
-    <form className="new-sketch-form" onSubmit={(e) => props.newSketch(e, props.script.id)}>
+    <form
+      className="new-sketch-form"
+      onSubmit={(e) => props.newSketch(e, props.script.id)}
+    >
       <TextField
         onChange={props.handleSketchTitle}
         value={props.sketchTitle}
@@ -44,7 +78,28 @@ const NewSketch = (props) => {
         style={textFieldStyle}
       />
 
-      <div style={textFieldStyle}>
+      <div>
+        <span className="plus">
+          <ActorButton
+            variant="contained"
+            onClick={handleAddActorTextField}
+            className="plus"
+            size="small"
+          >
+            <AddIcon />
+          </ActorButton>
+        </span>
+        <span className="minus">
+          <ActorButton
+            variant="contained"
+            onClick={handleRemoveActorTextField}
+            className="minus"
+            size="small"
+          >
+            <RemoveIcon />
+          </ActorButton>
+        </span>
+
         {props.totalActors.map((actor, index) => {
           return (
             <span key={index}>
@@ -58,24 +113,6 @@ const NewSketch = (props) => {
             </span>
           );
         })}
-        <span className="actor-btn-container">
-          <Button
-            variant="contained"
-            onClick={handleAddActorTextField}
-            className="plus"
-            size="small"
-          >
-            +
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleRemoveActorTextField}
-            className="minus"
-            size="small"
-          >
-            -
-          </Button>
-        </span>
       </div>
       <TextField
         onChange={props.handleLocation}
@@ -94,9 +131,11 @@ const NewSketch = (props) => {
         style={textFieldStyle}
       />
 
-      <Button type="submit" variant="contained" style={textFieldStyle}>
-        Create New Sketch
-      </Button>
+      <div className="create-btn">
+        <CustomButton type="submit" variant="contained" style={textFieldStyle}>
+          Create New Sketch
+        </CustomButton>
+      </div>
     </form>
   );
 };

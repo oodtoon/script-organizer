@@ -1,7 +1,25 @@
 import Selector from "./Selector";
 import { Button } from "@mui/material";
+import { styled } from "@mui/material/styles";
+
+
+const CustomButton = styled(Button)(({ theme }) => ({
+  backgroundColor: "black",
+  borderRadius: "0px",
+  fontWeight: "700",
+  "&:hover": {
+    backgroundColor: "white",
+    border: "3px solid black",
+    color: "black", 
+    boxShadow: ".5em .5em hotpink"
+  },
+}));
+
+
 
 const Filters = (props) => {
+
+
   const handleFilterReset = () => {
     props.setNameFilter([]);
     props.setStatusFiler("All");
@@ -55,10 +73,15 @@ const Filters = (props) => {
               handleFilter={props.handleLocationFilter}
             />
           </span>
-          <span>
-            <Button variant="contained" onClick={handleFilterReset}>
+          <span className="filter-btn">
+            <CustomButton
+              variant="contained"
+              onClick={handleFilterReset}
+              
+              
+            >
               Reset Filters
-            </Button>
+            </CustomButton>
           </span>
         </div>
       </div>

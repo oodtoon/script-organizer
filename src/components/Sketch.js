@@ -1,9 +1,10 @@
 import Checkbox from "@mui/material/Checkbox";
-import { Box } from "@mui/material";
+import { Box, InputLabel } from "@mui/material";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { useState } from "react";
 import scriptService from "../services/scripts";
 import InLineEdit from "./InLineEdit";
+import RemoveSketch from "./RemoveSketch";
 
 const Sketch = (props) => {
   const [status, setStatus] = useState(props.sketch.completed);
@@ -12,10 +13,10 @@ const Sketch = (props) => {
     display: props.sketch.visible === true ? "grid" : "none",
     gridTemplateRows: "3em auto",
     gridTemplateColumns: "1fr 1fr 1fr",
-    gridTemplateAreas: `"drag title completed" "sketch sketch sketch"`,
+    gridTemplateAreas: `"drag title completed" "sketchInfo sketch sketch"`,
     margin: "2em auto",
     border: "solid 3px black",
-    boxShadow: "0 0 0.5em",
+    boxShadow: `rgba(240, 46, 170, 0.4) 0px 5px, rgba(240, 46, 170, 0.3) 0px 10px, rgba(240, 46, 170, 0.2) 0px 15px, rgba(240, 46, 170, 0.1) 0px 20px, rgba(240, 46, 170, 0.05) 0px 25px`,
     justifyItems: "start",
     padding: "2em",
     borderRadius: "4px",
@@ -33,6 +34,12 @@ const Sketch = (props) => {
   };
 
   const sketchBody = {
+    gridArea: "sketchInfo",
+    textDecoration: props.sketch.completed === true ? "line-through" : "none",
+    display: "grid",
+  };
+
+  const script = {
     gridArea: "sketch",
     textDecoration: props.sketch.completed === true ? "line-through" : "none",
     display: "grid",
@@ -41,6 +48,10 @@ const Sketch = (props) => {
   const drag = {
     gridArea: "drag",
     cursor: "move",
+  };
+
+  const sketchSection = {
+    margin: "1em",
   };
 
   const DragHandle = () => {
@@ -76,12 +87,15 @@ const Sketch = (props) => {
         </div>
         <Box style={title}>
           <span>
-            sketch title:
+            <label htmlFor={`sketchTitle-${props.sketch.id}`}>
+              sketch title:{" "}
+            </label>
             <InLineEdit
               text={props.sketch.sketchTitle}
               keyToEdit={"sketchTitle"}
               obj={props.script}
               scene={props.sketch}
+              id={props.sketch.id}
             />
           </span>{" "}
         </Box>
@@ -89,19 +103,22 @@ const Sketch = (props) => {
           completed:{" "}
           <Checkbox color="default" checked={status} onChange={handleCheck} />
         </Box>
-        <Box style={sketchBody}>
-          <div>
-            <span>
-              script:{" "}
+        <Box style={script}>
+          <div style={sketchSection}>
+              <InputLabel htmlFor={`sketch-${props.sketch.id}`}>
+                script:{" "}
+              </InputLabel>
               <InLineEdit
                 text={props.sketch.sketch}
                 keyToEdit={"sketch"}
                 obj={props.script}
                 scene={props.sketch}
-              />
-            </span>
+                id={props.sketch.id}
+              />            
           </div>
-          <div>
+        </Box>
+        <Box style={sketchBody}>
+          <div style={sketchSection}>
             {props.sketch.actors.length === 1 ? "actor" : "actors"}:{" "}
             {props.sketch.actors.map((actor, index) => {
               return (
@@ -112,32 +129,46 @@ const Sketch = (props) => {
                     obj={props.script}
                     scene={props.sketch}
                     index={index}
+                    id={props.sketch.id}
                   />
                 </div>
               );
             })}
           </div>
-          <div>
-            <label>location:</label>{" "}
-            <InLineEdit
-              text={props.sketch.location}
-              keyToEdit={"location"}
-              obj={props.script}
-              scene={props.sketch}
-            />
-          </div>
-          <div>
+          <div style={sketchSection}>
             <span>
-              <label>camera shot(s):</label>{" "}
+              <InputLabel htmlFor={`location-${props.sketch.id}`}>
+                location:
+              </InputLabel>
+              <InLineEdit
+                text={props.sketch.location}
+                keyToEdit={"location"}
+                obj={props.script}
+                scene={props.sketch}
+                id={props.sketch.id}
+              />
+            </span>
+          </div>
+          <div style={sketchSection}>
+            <span>
+              <InputLabel htmlFor={`shots-${props.sketch.id}`}>
+                camera shot(s):
+              </InputLabel>{" "}
               <InLineEdit
                 text={props.sketch.shots}
                 keyToEdit={"shots"}
                 obj={props.script}
                 scene={props.sketch}
+                id={props.sketch.id}
               />
             </span>{" "}
           </div>
         </Box>
+        <RemoveSketch
+          sketch={props.sketch}
+          script={props.script}
+          setScript={props.setScript}
+        />
       </Box>
     </div>
   );

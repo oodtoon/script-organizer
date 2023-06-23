@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import Selector from "../Selector";
+import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
+
 import "../../App.css";
 
 const HomeScreen = (props) => {
@@ -9,7 +11,6 @@ const HomeScreen = (props) => {
   const titles = props.allScripts.map((script) => script.title);
 
   const handleScriptSelect = (event) => {
-
     const theScript = props.allScripts.find(
       (script) => script.title === event.target.value
     );
@@ -30,14 +31,24 @@ const HomeScreen = (props) => {
   }
 
   return (
-    <div className="home-container">
-      <h1>Script Organizer</h1>
-      <Box sx={{ m: "1em" }}>
-        Create a <Link to="newscript">New Script</Link>
-      </Box>
-      <div>
-        Continue working on existing script{" "}
-        <span>
+    <div className="home-page">
+      <div className="home-container">
+        <h1 className="home-title">
+          Script Organizer <HistoryEduIcon fontSize="large" />
+        </h1>
+        <Box className="new">
+          Create a{" "}
+          <span className="link-container">
+            <Link to="newscript" className="new-link">
+              New Script
+            </Link>
+          </span>
+        </Box>
+
+        <div className="continue-label">
+          <div>Continue working on existing script </div>
+        </div>
+        <span className="continue-select">
           <Selector
             id={"edit"}
             name={"edit"}
@@ -47,10 +58,11 @@ const HomeScreen = (props) => {
             handleFilter={handleScriptSelect}
           />
         </span>
-      </div>
-      <div>
-        Select a script to film{" "}
-        <span>
+
+        <div className="film-label">
+          <div>Select a script to film</div>{" "}
+        </div>
+        <span className="film-select">
           <Selector
             id={"film"}
             name={"film"}

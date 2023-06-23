@@ -195,9 +195,9 @@ function App() {
 
     const sceneObj = {
       sketchTitle: sketchTitle,
-      sketch: sketch,
-      actors: actors,
-      location: location,
+      sketch: sketch || "",
+      actors: actors || ["beans"],
+      location: location || "potatoes",
       shots: shots,
       completed: false,
       visible: true,
@@ -288,28 +288,12 @@ function App() {
               path="newscript"
               element={
                 <CreateNewScript
-                  totalActors={totalActors}
-                  sketch={sketch}
-                  actors={actors}
-                  shots={shots}
-                  sketchTitle={sketchTitle}
                   isDraft={isDraft}
                   script={script}
                   allScripts={allScripts}
                   setAllScripts={setAllScripts}
                   setIsDraft={setIsDraft}
-                  setTotalActors={setTotalActors}
-                  setShots={setShots}
-                  setSketch={setSketch}
-                  setActors={setActors}
-                  setSketchTitle={setSketchTitle}
-                  handleActors={handleActors}
-                  handleSketch={handleSketch}
-                  handleShots={handleShots}
-                  handleSketchTitle={handleSketchTitle}
-                  handleDragDrop={handleDragDrop}
                   setScript={setScript}
-                  newSketch={newSketch}
                 />
               }
             />

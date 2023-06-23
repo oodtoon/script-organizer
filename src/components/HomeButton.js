@@ -1,13 +1,14 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import "../App.css";
 
 const HomeButton = (props) => {
-    const navigate = useNavigate()
+  return (
+    <>
+      <Link to="/" className="home-btn">
+        {props.place}
+      </Link>
+    </>
+  );
+};
 
-    return (
-        <>
-        <Link to="/">{props.place}</Link>
-        </>
-    )
-}
-
-export default HomeButton
+export default HomeButton;
