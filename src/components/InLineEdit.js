@@ -3,10 +3,12 @@ import { TextField } from "@mui/material";
 import scriptService from "../services/scripts";
 import "../App.css";
 
-const InLineEdit = ({ text, keyToEdit, obj, scene, index, id }) => {
+const InLineEdit = ({ text, keyToEdit, obj, scene, index, id, short }) => {
   const [textEdit, setTextEdit] = useState(text);
   const [isInputHidden, setIsInputHidden] = useState(true);
   const inputRef = useRef(null);
+
+  const width = short === true ? false : true
 
   const onChange = (event) => {
     setTextEdit(event.target.value);
@@ -92,7 +94,7 @@ const InLineEdit = ({ text, keyToEdit, obj, scene, index, id }) => {
           size="small"
           className={`inline-edit ${isInputHidden ? "hidden" : ""}`}
           multiline
-          fullWidth
+          fullWidth={width}
         />
       </span>
 
@@ -104,6 +106,7 @@ const InLineEdit = ({ text, keyToEdit, obj, scene, index, id }) => {
           setIsInputHidden(false);
         }}
         hidden={!isInputHidden}
+        className="inline-text"
       >
         {textEdit}
       </span>
