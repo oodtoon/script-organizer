@@ -19,8 +19,10 @@ const HomeScreen = (props) => {
     localStorage.setItem("selectedScript", JSON.stringify(theScript.id));
 
     if (event.target.name === "edit") {
+      localStorage.setItem("draft", JSON.stringify(true))
       props.setIsDraft(true);
     } else {
+      localStorage.setItem("draft", JSON.stringify(false))
       props.setIsDraft(false);
     }
     navigate("/script");

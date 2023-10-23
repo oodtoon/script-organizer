@@ -7,21 +7,18 @@ import "./App.css";
 import CreateNewScript from "./components/routes/CreateNewScript";
 import scriptService from "./services/scripts";
 import Footer from "./components/Footer";
-
-const getRandomId = () => {
-  return (Math.random() * 100000000).toString();
-};
+import { v4 as uuidv4 } from "uuid";
 
 function App() {
   const [allScripts, setAllScripts] = useState([]);
+
+  const [script, setScript] = useState();
 
   useEffect(() => {
     scriptService.getAll().then((response) => {
       setAllScripts(response.data);
     });
   }, []);
-
-  const [script, setScript] = useState();
 
   useEffect(() => {
     const selectedId = localStorage.getItem("selectedScript");
@@ -37,6 +34,13 @@ function App() {
     }
   }, [allScripts]);
 
+  useEffect(() => {
+    if (script) {
+      const allUneditedScripts = allScripts.filter((s) => s.id !== script.id)
+      setAllScripts([...allUneditedScripts, script])
+    }
+  }, [script])
+
   const [sketch, setSketch] = useState("");
   const [actors, setActors] = useState([""]);
   const [totalActors, setTotalActors] = useState([1]);
@@ -46,6 +50,15 @@ function App() {
 
   const [isFilterChange, setIsFilterChange] = useState(false);
   const [isDraft, setIsDraft] = useState(false);
+
+  useEffect(() => {
+    const draftState = localStorage.getItem("draft");
+
+    if (draftState) {
+      const parsedIsDraft = JSON.parse(draftState);
+      setIsDraft(parsedIsDraft);
+    }
+  }, [isDraft]);
 
   const [uniqueTotalActors, setUniqueTotalActors] = useState([]);
   const [uniqueActorsInScene, setUniqueActorsInScene] = useState([]);
@@ -168,7 +181,14 @@ function App() {
 
       setIsFilterChange(false);
     }
-  }, [isFilterChange, numberFilter, nameFilter, statusFilter, script]);
+  }, [
+    isFilterChange,
+    numberFilter,
+    nameFilter,
+    statusFilter,
+    script,
+    locationFilter,
+  ]);
 
   const handleSketchTitle = (event) => {
     setSketchTitle(event.target.value);
@@ -192,28 +212,35 @@ function App() {
     setActors(enteredData);
   };
 
-  const newSketch = (event, id) => {
+  const newSketch = async (event, id) => {
     event.preventDefault();
 
     const sceneObj = {
       sketchTitle: sketchTitle,
-      sketch: sketch || "",
-      actors: actors || ["beans"],
-      location: location || "potatoes",
+      sketch: sketch,
+      actors: actors,
+      location: location,
       shots: shots,
       completed: false,
       visible: true,
-      id: getRandomId(),
+      id: uuidv4(),
     };
 
-    const scriptToUpdate = allScripts.find((script) => script.id === id);
-    const newScene = {
-      ...scriptToUpdate,
-      scenes: scriptToUpdate.scenes.concat(sceneObj),
-    };
-    scriptService.update(id, newScene).then((response) => {
-      setScript(response.data);
-    });
+      const scriptToUpdate = allScripts.find((script) => script.id === id);
+
+      const newScriptObj = {
+        ...scriptToUpdate,
+        scenes: [...scriptToUpdate.scenes, sceneObj],
+      };
+
+      const response = await scriptService.update(id, newScriptObj) 
+    
+      try {
+        setScript(response)
+      } catch {
+        console.log("error")
+      }
+      
     setActors([""]);
     setShots("");
     setSketch("");

@@ -20,7 +20,7 @@ const RemoveSketch = (props) => {
       };
 
       scriptService.update(props.script.id, newObj).then((response) => {
-        props.setScript(response.data);
+        props.setScript(response);
       });
     }
   };

@@ -152,7 +152,7 @@
   justify-self: end;
 }
 
-/* Sketch Card - might not be necessary? */
+/* Sketch Card */
 
 .sketch-container {
   display: grid;
@@ -189,14 +189,6 @@
 
 .inline-text {
   white-space: pre-line;
-}
-/*.sketch-title {
-  grid-area: title;
-}
-
-.completed {
-  grid-area: completed;
-  justify-self: end;
 }
 
 

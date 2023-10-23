@@ -4,6 +4,7 @@ import scriptService from "../../services/scripts";
 import { useNavigate } from "react-router-dom";
 import "../../App.css";
 import HomeButton from "../HomeButton";
+import { v4 as uuidv4} from "uuid"
 
 import { styled } from "@mui/material/styles";
 
@@ -22,7 +23,7 @@ const CustomButton = styled(Button)(({ theme }) => ({
 
 
 const randomId = () => {
-  return (Math.random() * 100000000).toString();
+  return uuidv4()
 };
 
 const CreateNewScript = (props) => {

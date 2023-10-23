@@ -79,6 +79,11 @@ const FilmingScript = (props) => {
           />
         </div>
         <h1 className="title">{props.script.title}</h1>
+        {props.isDraft === true && (
+          <div className="scene-count">
+            <span >total scenes: {props.script.scenes.length}</span>{" "}
+          </div>
+        )}
 
         {props.isDraft === false && (
           <div className="scene-count">

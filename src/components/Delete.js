@@ -1,4 +1,3 @@
-import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import scriptService from "../services/scripts";
 import IconButton from "@mui/material/IconButton";
