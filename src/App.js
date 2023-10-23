@@ -34,13 +34,6 @@ function App() {
     }
   }, [allScripts]);
 
-  useEffect(() => {
-    if (script) {
-      const allUneditedScripts = allScripts.filter((s) => s.id !== script.id)
-      setAllScripts([...allUneditedScripts, script])
-    }
-  }, [script])
-
   const [sketch, setSketch] = useState("");
   const [actors, setActors] = useState([""]);
   const [totalActors, setTotalActors] = useState([1]);
@@ -89,7 +82,7 @@ function App() {
       };
 
       scriptService.update(updatedScript.id, updatedScript).then((response) => {
-        setScript(response.data);
+        setScript(response);
       });
     }
   };
@@ -214,6 +207,7 @@ function App() {
 
   const newSketch = async (event, id) => {
     event.preventDefault();
+    console.log(script)
 
     const sceneObj = {
       sketchTitle: sketchTitle,
@@ -226,11 +220,9 @@ function App() {
       id: uuidv4(),
     };
 
-      const scriptToUpdate = allScripts.find((script) => script.id === id);
-
       const newScriptObj = {
-        ...scriptToUpdate,
-        scenes: [...scriptToUpdate.scenes, sceneObj],
+        ...script,
+        scenes: [...script.scenes, sceneObj],
       };
 
       const response = await scriptService.update(id, newScriptObj) 
