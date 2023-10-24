@@ -207,7 +207,6 @@ function App() {
 
   const newSketch = async (event, id) => {
     event.preventDefault();
-    console.log(script)
 
     const sceneObj = {
       sketchTitle: sketchTitle,

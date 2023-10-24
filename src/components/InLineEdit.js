@@ -46,9 +46,6 @@ const InLineEdit = ({ text, keyToEdit, obj, scene, index, id, short }) => {
       } else {
         const updatedLine = { ...scene, [keyToEdit]: textEdit };
 
-        console.log("scene", scene)
-
-
         const updatedScenes = obj.scenes.map((scene) =>
           scene.id !== updatedLine.id ? scene : updatedLine
         );
@@ -57,8 +54,6 @@ const InLineEdit = ({ text, keyToEdit, obj, scene, index, id, short }) => {
           ...obj,
           scenes: updatedScenes,
         };
-
-        console.log("script", scriptObj)
 
         scriptService.update(obj.id, scriptObj).then((response) => {
           setIsInputHidden(true);
